@@ -11,6 +11,10 @@ def product_list(request):
 
 from django.http import HttpResponse
 
-def home(request):
-    return HttpResponse("Mezouar Fruit is working ✅")
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'products/product_list.html', {
+        'products': products
+    })
+    
 # Create your views here.
