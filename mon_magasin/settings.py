@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     ...
 ]
 
@@ -143,4 +144,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mezouarabderrahmane04@gmail.com'
 EMAIL_HOST_PASSWORD = 'adgk iaqh bqvz enjd'
 
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
