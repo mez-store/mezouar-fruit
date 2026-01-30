@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>محل الإخوة مزوار - خضر و فواكه</title>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🥕🍎 محل الإخوة مزوار</h1>
+    <p>خضر وفواكه طازجة</p>
+</div>
+
+<div class="container">
+<div class="products">
+
+{% for product in products %}
+
+<form method="post" action="{% url 'cart_add' product.id %}">
+{% csrf_token %}
+
+<div class="card">
+
+    <img src="{{ product.image.url }}">
+
+    <div class="content">
+
+        <h3>{{ product.name }}</h3>
+
+        <div class="price">
+         السعر للوحدة:
+         {{ product.price }} دج /
+         {% if product.sell_unit == 'kg' %}كغ{% else %}قطعة{% endif %}
+         </div>
+
+         <!-- ✅ السعر الإجمالي -->
+         <div class="total-price" id="price-{{ product.id }}">
+         {{ product.price }} دج
+        </div>
+
+        <!-- ✅ كمية صحيحة -->
+        <div class="qty-box" data-step="{{ product.step }}">
+            <button type="button" onclick="changeQty(this, -1)">−</button>
+
+            <input
+                type="number"
+                name="quantity"
+                value="{{ product.step }}"
+                step="{{ product.step }}"
+                min="{{ product.step }}"
+                data-price="{{ product.price }}"
+                data-product="{{ product.id }}"
+                oninput="updatePrice(this)"
+            >
+
+            <button type="button" onclick="changeQty(this, 1)">+</button>
+        </div>
+
+        <button type="submit" class="add-btn">
+         🛒 أضف إلى السلة
+        </button>
+
+    </div>
+</div>
+
+</form>
+
+{% endfor %}
+
+</div>
+</div>
+
+<a href="{% url 'cart_detail' %}" class="cart-btn">
+🛒 السلة
+</a>
+
+<script>
+function updatePrice(input) {
+    const price = parseFloat(input.dataset.price);
+    const qty = parseFloat(input.value);
+    const id = input.dataset.product;
+
+    const total = price * qty;
+
+    document.getElementById("price-" + id).innerText =
+        total.toFixed(0) + " دج";
+}
+
+function changeQty(btn, direction) {
+    const box = btn.closest('.qty-box');
+    const input = box.querySelector('input');
+    const step = parseFloat(box.dataset.step);
+
+    let value = parseFloat(input.value);
+    value = value + (step * direction);
+
+    if (value < step) value = step;
+
+    input.value = value.toFixed(1);
+
+    updatePrice(input); // 🔥 مهم جدا
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+web: gunicorn mon_magasin.wsgi

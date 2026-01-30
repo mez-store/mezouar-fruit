@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>سلة المشتريات | محل الإخوة مزوار</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Tahoma, Arial;
+    background:#f7f7f7;
+}
+
+/* الهيدر */
+.header{
+    background:linear-gradient(135deg,#ff7a00,#ffd500);
+    padding:30px;
+    text-align:center;
+    color:white;
+}
+.header h1{
+    margin:0;
+}
+
+/* المحتوى */
+.container{
+    max-width:1000px;
+    margin:30px auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th, td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+th{
+    background:#fff3cd;
+}
+td img{
+    width:60px;
+    border-radius:8px;
+}
+
+/* المجموع */
+.total{
+    text-align:left;
+    font-size:20px;
+    font-weight:bold;
+    color:green;
+    margin-top:20px;
+}
+
+/* الأزرار */
+.actions{
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+}
+.btn{
+    padding:12px 25px;
+    border-radius:8px;
+    text-decoration:none;
+    color:white;
+    font-weight:bold;
+}
+.btn-back{
+    background:#ff7a00;
+}
+.btn-order{
+    background:#2e7d32;
+}
+.btn-back:hover{background:#e66a00;}
+.btn-order:hover{background:#256428;}
+
+.empty{
+    text-align:center;
+    font-size:18px;
+    padding:40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🛒 سلة المشتريات</h1>
+</div>
+
+<div class="container">
+
+{% if cart %}
+<table>
+    <tr>
+        <th>المنتوج</th>
+        <th>السعر</th>
+        <th>الكمية</th>
+        <th>الإجمالي</th>
+        <th>حذف</th>
+    </tr>
+
+    {% for item in cart %}
+    <tr>
+        <td>
+            <img src="{{ item.product.image.url }}"><br>
+            {{ item.product.name }}
+        </td>
+        <td>{{ item.price }} دج</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.total_price }} دج</td>
+        <td>
+            <a href="{% url 'cart_remove' item.product.id %}">❌</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="total">
+    💰 المجموع الكلي: {{ cart.get_total_price }} دج
+</div>
+
+<div class="actions">
+    <a href="{% url 'product_list' %}" class="btn btn-back">
+        ⬅ مواصلة التسوق
+    </a>
+
+    <a href="{% url 'order_create' %}" class="btn btn-order">
+        ✅ إتمام الطلب
+    </a>
+</div>
+
+{% else %}
+<div class="empty">
+    🛒 السلة فارغة <br><br>
+    <a href="{% url 'product_list' %}" class="btn btn-back">
+        العودة للمنتوجات
+    </a>
+</div>
+{% endif %}
+
+</div>
+
+</body>
+</html>

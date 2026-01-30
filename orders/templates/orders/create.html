@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>محل الإخوة مزوار للخضر و الفواكه</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Tahoma", Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* ====== الهيدر ====== */
+        .header {
+            background: linear-gradient(135deg, #ff7a00, #ffcc00);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+        }
+
+        /* ====== الحاوية ====== */
+        .container {
+            max-width: 550px;
+            background: white;
+            margin: -40px auto 40px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #ff7a00;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        button {
+            width: 100%;
+            background-color: #ff7a00;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 17px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #e66900;
+        }
+
+        /* ====== الفوتر ====== */
+        .footer {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ====== الهيدر ====== -->
+<div class="header">
+    <h1>مرحبًا بكم في محل الإخوة مزوار</h1>
+    <p>🍊 خضر وفواكه طازجة • جودة مضمونة • خدمة موثوقة 🍎</p>
+</div>
+
+<!-- ====== الفورم ====== -->
+<div class="container">
+    <h2>📝 تأكيد الطلب</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>الاسم الكامل</label>
+        <input type="text" name="name" placeholder="أدخل اسمك" required>
+
+        <label>رقم الهاتف</label>
+        <input type="text" name="phone" placeholder="مثال: 05xxxxxxxx" required>
+
+        <label>البريد الإلكتروني (اختياري)</label>
+        <input type="email" name="email" placeholder="example@email.com">
+
+        <label>طريقة الاستلام</label>
+        <select name="delivery_type" id="delivery">
+            <option value="pickup">📍 استلام من المحل</option>
+            <option value="home">🚚 توصيل إلى المنزل</option>
+        </select>
+
+        <div id="address-field" style="display:none;">
+            <label>العنوان</label>
+            <textarea name="address" rows="3" placeholder="أدخل عنوان التوصيل"></textarea>
+        </div>
+
+        <button type="submit">✅ تأكيد الطلب</button>
+    </form>
+</div>
+
+<div class="footer">
+    © 2026 محل الإخوة مزوار للخضر و الفواكه
+</div>
+
+<script>
+document.getElementById('delivery').addEventListener('change', function () {
+    document.getElementById('address-field').style.display =
+        this.value === 'home' ? 'block' : 'none';
+});
+</script>
+
+</body>
+</html>
