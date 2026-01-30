@@ -8,4 +8,9 @@ def product_list(request):
         'categories': categories,
         'products': products
     })
+
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Mezouar Fruit is working ✅")
 # Create your views here.
