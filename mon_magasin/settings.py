@@ -146,3 +146,23 @@ EMAIL_HOST_PASSWORD = 'adgk iaqh bqvz enjd'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+import os
+
+if os.environ.get("RENDER") == "true":
+    from django.core.management import call_command
+    call_command("create_admin")
+
+import os
+
+if os.environ.get("RENDER"):
+    from django.contrib.auth.models import User
+    try:
+        if not User.objects.filter(username="admin").exists():
+            User.objects.create_superuser(
+                username="admin",
+                email="admin@mezouar.com",
+                password="Admin12345"
+            )
+    except Exception:
+        pass
