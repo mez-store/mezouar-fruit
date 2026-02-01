@@ -6,9 +6,9 @@ class Command(BaseCommand):
     help = 'Create default admin user if not exists'
 
     def handle(self, *args, **kwargs):
-        username = os.environ.get("ADMIN_USER", "mez_pc")
+        username = os.environ.get("ADMIN_USER", "abderrahmanepc")
         email = os.environ.get("ADMIN_EMAIL", "admin@mezouar.com")
-        password = os.environ.get("ADMIN_PASS", "Admin12345")
+        password = os.environ.get("ADMIN_PASS", "mezaaa12345")
 
         if not User.objects.filter(username=username).exists():
             User.objects.create_superuser(

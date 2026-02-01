@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ziw26qgz4octu8oziyfe-9(y_xo3=^1dzz*wuzq00^5yxctkio'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["mezouar-fruit.onrender.com", "*"]
 
 
 # Application definition
@@ -46,12 +46,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    ...
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -146,23 +140,4 @@ EMAIL_HOST_PASSWORD = 'adgk iaqh bqvz enjd'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-import os
-
-if os.environ.get("RENDER") == "true":
-    from django.core.management import call_command
-    call_command("create_admin")
-
-import os
-
-if os.environ.get("RENDER"):
-    from django.contrib.auth.models import User
-    try:
-        if not User.objects.filter(username="admin").exists():
-            User.objects.create_superuser(
-                username="admin",
-                email="admin@mezouar.com",
-                password="Admin12345"
-            )
-    except Exception:
-        pass
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
