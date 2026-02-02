@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .models import Order
 from cart.cart import Cart
 import urllib.parse
-
+from decimal import Decimal
 
 def order_create(request):
     cart = Cart(request)
@@ -25,7 +25,7 @@ def order_create(request):
             product = item['product']
             quantity = item['quantity']
             price = item['price']
-            total = price * quantity
+            total = price * Decimal(quantity)
 
             total_price += total
 

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ziw26qgz4octu8oziyfe-9(y_xo3=^1dzz*wuzq00^5yxctkio'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["mezouar-fruit.onrender.com", "*"]
+ALLOWED_HOSTS = ["mezouar-fruit.onrender.com"]
 
 
 # Application definition
@@ -135,8 +135,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'mezouarabderrahmane04@gmail.com'
-EMAIL_HOST_PASSWORD = 'adgk iaqh bqvz enjd'
+import os
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
