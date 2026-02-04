@@ -25,8 +25,15 @@ SECRET_KEY = 'django-insecure-ziw26qgz4octu8oziyfe-9(y_xo3=^1dzz*wuzq00^5yxctkio
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["mezouar-fruit.onrender.com"]
+ALLOWED_HOSTS = [
+    "mezouar-fruit-1.onrender.com",
+    "localhost",
+    "127.0.0.1"
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://mezouar-fruit-1.onrender.com"
+]
 
 # Application definition
 
