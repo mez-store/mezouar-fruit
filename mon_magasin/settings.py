@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ziw26qgz4octu8oziyfe-9(y_xo3=^1dzz*wuzq00^5yxctkio'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "mezouar-fruit-1.onrender.com",
