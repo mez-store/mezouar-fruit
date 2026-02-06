@@ -10,6 +10,4 @@ tzdata==2025.3
 ua-parser==1.0.1
 ua-parser-builtins==0.18.0.post1
 user-agents==2.2.0
-
-gunicorn
-whitenoise
+whitenoise==6.11.0
