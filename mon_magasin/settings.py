@@ -6,7 +6,10 @@ Deploy Ready for Render + Static Files Fix
 import os
 from pathlib import Path
 
-# Build paths
+# ===============================
+# PATHS
+# ===============================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -16,17 +19,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-dev-key")
 
-# مهم جدا في Render لازم False
+# لازم تكون False في Render
 DEBUG = False
 
 ALLOWED_HOSTS = [
     "mezouar-fruit-1.onrender.com",
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://mezouar-fruit-1.onrender.com"
+    "https://mezouar-fruit-1.onrender.com",
 ]
 
 
@@ -56,7 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # WhiteNoise للـ static
+    # WhiteNoise (Static Fix)
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -143,21 +146,24 @@ USE_TZ = True
 
 
 # ===============================
-# STATIC FILES (CSS, JS, Images)
+# STATIC FILES (Render Fix)
 # ===============================
 
 STATIC_URL = "/static/"
 
-# Folder static لي فيه الصور مثلا static/images/
+# هذا هو folder لي تحط فيه الصور و css
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-# Folder لي Render يجمع فيه static
+# هذا هو folder لي Render يجمع فيه static
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# WhiteNoise Storage
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# مهم جدا: نخلي static يخدم بلا 500 errors
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# يخلي Django يلقى static داخل apps
+WHITENOISE_USE_FINDERS = True
 
 
 # ===============================
@@ -188,6 +194,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
+
+# ===============================
+# LOGGING (باش نشوفو الأخطاء في Render)
+# ===============================
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -198,6 +209,6 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "ERROR",
+        "level": "DEBUG",
     },
 }
