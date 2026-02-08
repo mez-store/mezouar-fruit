@@ -13,7 +13,6 @@
 <!-- ===== HERO SECTION ===== -->
 <div class="hero">
 
-    <!-- Logo -->
     <img src="{% static 'images/logo.png' %}" class="hero-logo">
 
     <h1>🥕🍎 محل الإخوة مزوار</h1>
@@ -26,14 +25,12 @@
 
 <!-- ===== SLIDER SECTION ===== -->
 <div class="slider">
-
     <div class="slides">
         <img src="{% static 'images/slide_welcome.png' %}">
         <img src="{% static 'images/slide_1.png' %}">
         <img src="{% static 'images/slide_2.png' %}">
         <img src="{% static 'images/slide_3.png' %}">
     </div>
-
 </div>
 
 <!-- ===== SEARCH ===== -->
@@ -59,10 +56,14 @@
 
     {% for product in cat.list %}
 
-    <form method="post" action="{% url 'cart_add' product.id %}">
-    {% csrf_token %}
-
     <div class="card">
+
+        <!-- ✅ Badge متوفر / غير متوفر -->
+        {% if product.available %}
+            <div class="badge available">✅ متوفر</div>
+        {% else %}
+            <div class="badge unavailable">❌ غير متوفر</div>
+        {% endif %}
 
         <img src="{{ product.image.url }}">
 
@@ -74,29 +75,41 @@
                 {% if product.sell_unit == 'kg' %}كغ{% else %}قطعة{% endif %}
             </div>
 
-            <!-- Quantity -->
-            <div class="qty-box" data-step="{{ product.step }}">
-                <button type="button" onclick="changeQty(this,-1)">−</button>
+            <!-- ✅ إذا المنتج غير متوفر: ممنوع الإضافة -->
+            {% if product.available %}
 
-                <input
-                    type="number"
-                    name="quantity"
-                    value="{{ product.step }}"
-                    step="{{ product.step }}"
-                    min="{{ product.step }}"
-                >
+            <form method="post" action="{% url 'cart_add' product.id %}">
+                {% csrf_token %}
 
-                <button type="button" onclick="changeQty(this,1)">+</button>
-            </div>
+                <div class="qty-box" data-step="{{ product.step }}">
+                    <button type="button" onclick="changeQty(this,-1)">−</button>
 
-            <button type="submit" class="add-btn">
-                🛒 أضف للسلة
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="{{ product.step }}"
+                        step="{{ product.step }}"
+                        min="{{ product.step }}"
+                    >
+
+                    <button type="button" onclick="changeQty(this,1)">+</button>
+                </div>
+
+                <button type="submit" class="add-btn">
+                    🛒 أضف للسلة
+                </button>
+            </form>
+
+            {% else %}
+
+            <button class="add-btn disabled" disabled>
+                ❌ غير متوفر حاليا
             </button>
+
+            {% endif %}
 
         </div>
     </div>
-
-    </form>
 
     {% endfor %}
 

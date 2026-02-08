@@ -249,3 +249,32 @@ input[type=number] {
     75%  {transform: translateX(-300%);}
     100% {transform: translateX(0);}
 }
+
+/* ===== AVAILABLE BADGE ===== */
+.badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.available {
+    background: green;
+}
+
+.unavailable {
+    background: red;
+}
+
+/* Disabled Button */
+.add-btn.disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+.card {
+    position: relative;
+}

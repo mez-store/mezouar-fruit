@@ -1,13 +1,17 @@
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render, redirect
-from .models import Order
+from .models import Order, OrderItem
 from cart.cart import Cart
-import urllib.parse
 from decimal import Decimal
+import urllib.parse
+
 
 def order_create(request):
     cart = Cart(request)
+
+    if len(cart.cart) == 0:
+        return redirect("product_list")
 
     if request.method == 'POST':
 
@@ -17,56 +21,48 @@ def order_create(request):
         delivery_type = request.POST.get('delivery_type')
         address = request.POST.get('address', '')
 
-        # 🔢 حساب المجموع
-        total_price = 0
+        total_price = Decimal("0")
         products_text = ""
 
-        for item in cart:
-            product = item['product']
-            quantity = item['quantity']
-            price = item['price']
-            total = price * Decimal(quantity)
-
-            total_price += total
-
-            products_text += (
-                f"• {product.name} — {quantity} × {price} دج = {total} دج\n"
-            )
-
-        # 💾 حفظ الطلب
+        # ✅ إنشاء الطلب
         order = Order.objects.create(
             name=name,
             phone=phone,
             email=email,
             delivery_type=delivery_type,
-            address=address,
-            total_price=total_price
+            address=address
         )
 
-        # 📧 رسالة الإيميل
+        # ✅ حفظ المنتجات داخل OrderItem
+        for item in cart:
+            product = item['product']
+            quantity = int(item['quantity'])
+            price = item['price']
+            total = price * quantity
+
+            total_price += total
+
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                price=price,
+                quantity=quantity
+            )
+
+            products_text += (
+                f"• {product.name} — {quantity} × {price} دج = {total} دج\n"
+            )
+
+        # ✅ تحديث مجموع الطلب
+        order.total_price = total_price
+        order.save()
+
+        # ==========================
+        # 📧 إرسال الإيميل (Safe)
+        # ==========================
+
         email_message = f"""
 طلب جديد من متجر الإخوة مزوار
-
-الاسم: {name}
-الهاتف: {phone}
-
-المنتجات:
-{products_text}
-
-المجموع: {total_price} دج
-"""
-
-        send_mail(
-            '🛒 طلب جديد من المتجر',
-            email_message,
-            settings.EMAIL_HOST_USER,
-            ['mezouarabderrahmane04@gmail.com'],
-            fail_silently=False,
-        )
-
-        # 📱 رسالة واتساب
-        whatsapp_message = f"""
-🛒 طلب جديد
 
 الاسم: {name}
 الهاتف: {phone}
@@ -77,16 +73,45 @@ def order_create(request):
 💰 المجموع: {total_price} دج
 """
 
+        try:
+            send_mail(
+                "🛒 طلب جديد من المتجر",
+                email_message,
+                settings.EMAIL_HOST_USER,
+                ["mezouarabderrahmane04@gmail.com"],
+                fail_silently=True,
+            )
+        except:
+            print("⚠️ Email not sent (Render)")
+
+        # ==========================
+        # 📱 رسالة واتساب
+        # ==========================
+
+        whatsapp_message = f"""
+🛒 طلب جديد
+
+👤 الاسم: {name}
+📞 الهاتف: {phone}
+
+📦 المنتجات:
+{products_text}
+
+💰 المجموع: {total_price} دج
+"""
+
         encoded = urllib.parse.quote(whatsapp_message)
+
         whatsapp_url = f"https://wa.me/213673619216?text={encoded}"
 
         # 🧹 تفريغ السلة
         cart.clear()
 
-        # ✅ التحويل لصفحة النجاح
-        return redirect('order_success')
+        # ✅ تحويل لصفحة النجاح
+        return redirect("order_success")
 
-    return render(request, 'orders/create.html')
+    return render(request, "orders/create.html")
+
 
 def order_success(request):
-    return render(request, 'orders/success.html')
+    return render(request, "orders/success.html")

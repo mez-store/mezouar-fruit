@@ -151,18 +151,15 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-# هذا هو folder لي تحط فيه الصور و css
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-# هذا هو folder لي Render يجمع فيه static
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# مهم جدا: نخلي static يخدم بلا 500 errors
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+# ✅ الحل الصحيح
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# يخلي Django يلقى static داخل apps
 WHITENOISE_USE_FINDERS = True
 
 
