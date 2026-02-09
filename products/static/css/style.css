@@ -1,10 +1,25 @@
 body {
     margin: 0;
     font-family: "Tahoma", sans-serif;
-    background: #f7f7f7;
     direction: rtl;
+    background: #fdfdfd;
+    position: relative;
 }
 
+/* دوائر خلفية */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at top left, rgba(255,165,0,0.15), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(0,200,83,0.15), transparent 40%),
+        radial-gradient(circle at center, rgba(255,0,0,0.08), transparent 50%);
+    z-index: -1;
+}
 /* ===== HERO ===== */
 .hero {
     text-align: center;
@@ -218,37 +233,32 @@ input[type=number] {
 /* ================================================= */
 /* ===== SLIDER (معدل باش يخدم مليح) ===== */
 /* ================================================= */
+/* =============================== */
+/* ✅ SLIDER ثابت مضمون */
+/* =============================== */
 
 .slider {
     width: 85%;
     max-width: 850px;
-    margin: 25px auto;
-    overflow: hidden;
+    margin: 20px auto;
     border-radius: 25px;
-    box-shadow: 0 4px 20px #ccc;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    background: white;
 }
 
-.slides {
-    display: flex;
-    width: 400%;
-    animation: slideMove 14s infinite ease-in-out;
-}
-
-.slides img {
+.slider img {
     width: 100%;
-    flex-shrink: 0;
-    height: 280px;
+    height: 260px;
     object-fit: cover;
     display: block;
 }
 
-/* حركة صحيحة RTL */
-@keyframes slideMove {
-    0%   {transform: translateX(0);}
-    25%  {transform: translateX(-100%);}
-    50%  {transform: translateX(-200%);}
-    75%  {transform: translateX(-300%);}
-    100% {transform: translateX(0);}
+/* Responsive */
+@media (max-width: 768px) {
+    .slider img {
+        height: 170px;
+    }
 }
 
 /* ✅ Responsive للهاتف */
