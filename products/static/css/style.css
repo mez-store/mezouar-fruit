@@ -241,6 +241,11 @@ input[type=number] {
     object-fit: cover;
 }
 
+.slides img {
+    height: auto;
+    max-height: 320px;
+}
+
 /* حركة صحيحة RTL */
 @keyframes slideMove {
     0%   {transform: translateX(0);}
